@@ -17,6 +17,7 @@ if [ $# -lt 2 ]; then
     exit
 fi
 
+# Check flags
 while getopts :vhm flag
 do
     case "${flag}" in
@@ -34,8 +35,6 @@ PROGRAM_TO_TEST=${@: -2} # Second to last argument
 TEST_FILES=${@: -1}/*.in # Last argument
 TEST_FILE_PATH=${@: -1}  # Last argument
 
-
-TEST_STRING=""
 rm -rd my_tests 2> /dev/null # Silence output on file/directory not found
 mkdir my_tests
 for item in $TEST_FILES; do
