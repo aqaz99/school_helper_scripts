@@ -81,7 +81,7 @@ do
             else
                 # User wants to run just one test
                 echo "-- Running test $tests --"
-                FIRST_TEST=$tests
+                LAST_TEST=$tests
             fi
             
             
@@ -100,12 +100,15 @@ mkdir my_tests
 FOUND_FIRST=0 # Checks for -t tests
 for item in $TEST_FILES; do
     TEST_NAME=$(echo $item | sed -e 's/.*\(t[0-9]\+\).*/\1/g')
+    
+    if [ $TEST_NAME == 't'$LAST_TEST ]; then # Exit after last test
+        display_test
+        exit
+    fi
+
     if [ $TEST_NAME == 't'$FIRST_TEST ]; then
         FOUND_FIRST=1
         display_test
-    elif [ $TEST_NAME == 't'$LAST_TEST ]; then
-        display_test
-        exit
     else
         if [ $FOUND_FIRST == 1 ]; then
             display_test
