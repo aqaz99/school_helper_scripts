@@ -1,8 +1,19 @@
 #!/usr/bin/bash
-LANG=EN_en
+# run_tests.bash
+# Author: James Miners-Webb
+# Info:   Student @ CSU Chico
+# Desc: Runs a series of input files into a student-written file 
+#       and compares the actual output vs expected output. 
+#       This greatly speeds up needing to diff manually or run tests one at a time. 
 
+#       As of now, 2 flags are also written, '-v' and '-m'.
+#       -v is verbose, prints your output and expected output after each test.
+#       -m is make, compile and make your program before running the rest of the script. 
+#       Script must live in the same directory as Makefile and source files.
+
+LANG=EN_en
 if [ $# -lt 2 ]; then
-    echo "Usage: $0 program_to_test location_of_test_files"
+    echo "Usage: $0 [OPTION] program_to_test location_of_test_files"
     exit
 fi
 
