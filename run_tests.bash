@@ -26,6 +26,10 @@ do
         ;;
         m) echo "-- Compiling Program --"
         make
+        if [ $? != 0 ]; then
+            echo "-- Program failed to compille --"
+            exit
+        fi
         ;;
         h) echo "Help is on the way";;
     esac
@@ -45,7 +49,7 @@ for item in $TEST_FILES; do
     MY_TEST_LOCATION=my_tests/$MY_TEST_NAME
     
     OUTPUT_LOCATION=$TEST_FILE_PATH/$TEST_NAME'.out'
-
+    echo "%%" $PROGRAM_TO_TEST "%%"
     $PROGRAM_TO_TEST < $item > my_tests/$MY_TEST_NAME
     
     DIFF_FILES=$(diff my_tests/$MY_TEST_NAME $OUTPUT_LOCATION)
