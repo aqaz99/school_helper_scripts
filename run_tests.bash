@@ -47,6 +47,7 @@ if [ $# -lt 2 ]; then
     exit
 fi
 
+LAST_TEST=""
 # Check flags
 while getopts :vhmt: flag
 do
@@ -97,22 +98,30 @@ TEST_FILE_PATH=${@: -1}  # Last argument
 rm -rd my_tests 2> /dev/null # Silence output on file/directory not found
 mkdir my_tests
 
-FOUND_FIRST=0 # Checks for -t tests
-for item in $TEST_FILES; do
-    TEST_NAME=$(echo $item | sed -e 's/.*\(t[0-9]\+\).*/\1/g')
-    
-    if [ $TEST_NAME == 't'$LAST_TEST ]; then # Exit after last test
+if [ "$LAST_TEST" == "" ];then # User did not provide test numbers
+    for item in $TEST_FILES; do
+        TEST_NAME=$(echo $item | sed -e 's/.*\(t[0-9]\+\).*/\1/g')
         display_test
-        exit
-    fi
+    done
 
-    if [ $TEST_NAME == 't'$FIRST_TEST ]; then
-        FOUND_FIRST=1
-        display_test
-    else
-        if [ $FOUND_FIRST == 1 ]; then
+else 
+    FOUND_FIRST=0 # Checks for -t tests
+    for item in $TEST_FILES; do
+        TEST_NAME=$(echo $item | sed -e 's/.*\(t[0-9]\+\).*/\1/g')
+        
+        if [ $TEST_NAME == 't'$LAST_TEST ]; then # Exit after last test
             display_test
+            exit
         fi
-    fi
-    
-done
+
+        if [ $TEST_NAME == 't'$FIRST_TEST ]; then
+            FOUND_FIRST=1
+            display_test
+        else
+            if [ $FOUND_FIRST == 1 ]; then
+                display_test
+            fi
+        fi
+        
+    done
+fi
