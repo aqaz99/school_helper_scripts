@@ -26,20 +26,19 @@ display_test(){
     DIFF_FILES=$(diff my_tests/$MY_TEST_NAME $OUTPUT_LOCATION)
 
     if [ $? == 1 ]; then # Return code of last command (diff) was not 0, meaning error
-        if [ $verbose ]; then
-            echo
-            echo "-- Test $TEST_NAME failed."
-            echo "Your output:"
-            cat my_tests/$MY_TEST_NAME
-            echo "Expected output:"
-            cat $OUTPUT_LOCATION
-            echo
-        else
-            echo "-- Test $TEST_NAME failed."
-        fi
+        echo "-- Test $TEST_NAME failed."
     else
         echo "Test $TEST_NAME passed!"
     fi
+
+    if [ $verbose ]; then
+        echo "Your output:"
+        cat my_tests/$MY_TEST_NAME
+        echo
+        echo "Expected output:"
+        cat $OUTPUT_LOCATION
+        echo
+    fi 
 }
 
 if [ $# -lt 2 ]; then
