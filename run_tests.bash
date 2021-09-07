@@ -27,18 +27,29 @@ display_test(){
 
     if [ $? == 1 ]; then # Return code of last command (diff) was not 0, meaning error
         echo "-- Test $TEST_NAME failed."
+        if [ $verbose ]; then
+            echo "Your output:"
+            cat my_tests/$MY_TEST_NAME
+            echo
+            echo "Expected output:"
+            cat $OUTPUT_LOCATION
+            echo
+        fi 
     else
         echo "Test $TEST_NAME passed!"
+        if [ ! $hide_passing ]; then
+            if [ $verbose ]; then
+                echo "Your output:"
+                cat my_tests/$MY_TEST_NAME
+                echo
+                echo "Expected output:"
+                cat $OUTPUT_LOCATION
+                echo
+            fi 
+        fi
     fi
 
-    if [ $verbose ]; then
-        echo "Your output:"
-        cat my_tests/$MY_TEST_NAME
-        echo
-        echo "Expected output:"
-        cat $OUTPUT_LOCATION
-        echo
-    fi 
+    
 }
 
 if [ $# -lt 2 ]; then
@@ -48,11 +59,13 @@ fi
 
 LAST_TEST=""
 # Check flags
-while getopts :vhmt: flag
+while getopts :vphmt: flag
 do
     case "${flag}" in
         v) verbose=1 
         echo "-- Running Verbose Mode --"
+        ;;
+        p) hide_passing=1
         ;;
         m) echo "-- Compiling Program --"
         make
